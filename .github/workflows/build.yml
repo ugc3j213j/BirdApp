@@ -3,7 +3,7 @@ name: Build APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:   # позволит запускать вручную
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,10 +27,10 @@ jobs:
         run: |
           pip install buildozer cython==0.29.21
 
-      - name: Create buildozer.spec
+      - name: Create buildozer.spec (correctly)
         run: |
-          cat > buildozer.spec << 'EOF'
-          [buildozer]
+          python -c "
+          spec = '''[buildozer]
           allow_root = True
 
           [app]
@@ -39,12 +39,16 @@ jobs:
           version = 1.0
           source.dir = .
           source.include_exts = py,png,jpg,kv,atlas,json
-          requirements = python3,kivy==2.1.0,kivymd==0.104.2,plyer,cython==3.0.10
+          requirements = python3,kivy==2.1.0,kivymd==0.104.2,plyer
           android.permissions = CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
           android.api = 33
           android.minapi = 21
           android.accept_sdk_license = True
-          EOF
+          '''
+          with open('buildozer.spec', 'w', encoding='utf-8') as f:
+              f.write(spec)
+          print('buildozer.spec created')
+          "
 
       - name: Build APK
         run: |
