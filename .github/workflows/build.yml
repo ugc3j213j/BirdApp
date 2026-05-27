@@ -23,9 +23,9 @@ jobs:
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev
 
-      - name: Install Buildozer and Cython
+      - name: Install Buildozer
         run: |
-          pip install --no-cache-dir buildozer cython==0.29.28
+          pip install --no-cache-dir buildozer
 
       - name: Create buildozer.spec
         run: |
@@ -44,6 +44,8 @@ jobs:
           android.api = 33
           android.minapi = 21
           android.accept_sdk_license = True
+          android.ndk = 25.2.9519653
+          p4a.branch = develop
           '''
           with open('buildozer.spec', 'w', encoding='utf-8') as f:
               f.write(spec)
