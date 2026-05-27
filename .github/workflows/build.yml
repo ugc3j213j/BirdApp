@@ -21,11 +21,11 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev
 
       - name: Install Buildozer and Cython
         run: |
-          pip install buildozer cython==0.29.28
+          pip install --no-cache-dir buildozer cython==0.29.28
 
       - name: Create buildozer.spec
         run: |
@@ -39,7 +39,7 @@ jobs:
           version = 1.0
           source.dir = .
           source.include_exts = py,png,jpg,kv,atlas,json
-          requirements = python3,kivy==2.1.0,kivymd==0.104.2,plyer,cython==0.29.28
+          requirements = python3,kivy==2.1.0,kivymd==0.104.2,plyer
           android.permissions = CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
           android.api = 33
           android.minapi = 21
