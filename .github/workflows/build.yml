@@ -7,52 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04      # ← единственное изменение!
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Build with Buildozer
+        uses: kivy/buildozer-action@v1
         with:
-          python-version: '3.10'
-
-      - name: Install system dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev
-
-      - name: Install Buildozer
-        run: |
-          pip install --no-cache-dir buildozer
-
-      - name: Create buildozer.spec
-        run: |
-          python -c "
-          spec = '''[buildozer]
-          allow_root = True
-
-          [app]
-          title = Птицы Приморья
-          package.name = birdsofprimorye
-          version = 1.0
-          source.dir = .
-          source.include_exts = py,png,jpg,kv,atlas,json
-          requirements = python3,kivy==2.1.0,kivymd==0.104.2,plyer
-          android.permissions = CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
-          android.api = 33
-          android.minapi = 21
-          android.accept_sdk_license = True
-          p4a.branch = develop
-          '''
-          with open('buildozer.spec', 'w', encoding='utf-8') as f:
-              f.write(spec)
-          print('buildozer.spec created')
-          "
-
-      - name: Build APK
-        run: |
-          buildozer -v android debug
+          workdir: .
+          buildozer_spec: buildozer.spec
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
