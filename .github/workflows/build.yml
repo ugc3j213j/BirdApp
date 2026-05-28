@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build with Buildozer
-        uses: kivy/buildozer-action@v1
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
-          workdir: .
           buildozer_spec: buildozer.spec
+          workdir: .
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
